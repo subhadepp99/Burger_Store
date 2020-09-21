@@ -23,7 +23,7 @@ this.setState({error:error});
 
 //when no longer a component is required and so as to release memory and avoid memory leakage
 componentWillUnmount(){
-    console.log('will unmount',this.reqInterceptor,this.resInterceptor);
+   // console.log('will unmount',this.reqInterceptor,this.resInterceptor);
 axios.interceptors.request.eject(this.reqInterceptor);
 axios.interceptors.response.eject(this.resInterceptor);
 }
