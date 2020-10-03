@@ -4,6 +4,8 @@ import './ContactData.css';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
 
 import {connect} from 'react-redux';
 
@@ -72,7 +74,7 @@ class ContactData extends Component {
                     {value:'cheapest',displayValue:'Cheapest'}
                 ]
                 },
-                value:'',valid:true, validation:{ }
+                value:'fastest',valid:true, validation:{ }
                 }
             },
         
@@ -82,14 +84,14 @@ class ContactData extends Component {
         //     street :'',
         //     postal_code:''
         // },
-        loading:false,
+        // loading:false,
         formIsValid:false
     }
 
     oderderHandler=(event)=>{
         event.preventDefault();
         console.log(this.props.ings);
-          this.setState({loading:true});
+        //   this.setState({loading:true});
 const formData={};
 for(let formElementIdentifier in this.state.orderForm){
     formData[formElementIdentifier]= this.state.orderForm[formElementIdentifier].value;
@@ -102,16 +104,9 @@ for(let formElementIdentifier in this.state.orderForm){
                             
                         }
 
-                        axios.post('/orders.json',order)
-                        .then(response => {
-                            this.setState({loading:false});
-                            console.log(response);
-                            this.props.history.push('/');
-                        })
-                        .catch(err=>{
-                            console.log(err);
-                            this.setState({loading:false});
-                        } );
+                        this.props.onOrderBurger(order);
+
+                        
     }
 
 
@@ -192,7 +187,7 @@ for(let key in this.state.orderForm){
           
 <Button btnType="Success" disabled={!this.state.formIsValid} clicked={this.oderderHandler}>Order</Button>
         </form>);
-        if(this.state.loading){
+        if(this.props.loading){
             form=<Spinner />;
         }
         return (
@@ -207,9 +202,19 @@ for(let key in this.state.orderForm){
 
 const mapStateToProps= state=>{
     return{
-    ings:state.ingredients,
-    price:state.totalPrice
+    ings:state.burgerBuilder.ingredients,
+    price:state.burgerBuilder.totalPrice,
+    loading:state.order.loading
     };
  };
 
-export default connect(mapStateToProps)(ContactData) ;
+
+ const mapDispatchToProps =dispatch=>{
+     return{
+        onOrderBurger: (orderData)=>  dispatch(actions.purchaseBurger(orderData)),
+
+     };
+    
+ };
+
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(ContactData,axios)) ;
