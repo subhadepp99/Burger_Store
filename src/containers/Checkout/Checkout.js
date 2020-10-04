@@ -10,6 +10,8 @@ class Checkout extends Component{
 //     componentWillMount(){
 // this.props.onInitPurchase();
 //     }
+
+
 //  state ={ingredients:null,
 //      totalPrice:0
 // }
@@ -53,8 +55,9 @@ checkoutContinued =()=>{
 let summary=<Redirect to="/" />;
 
 if(this.props.ings){
-    const purchasedRedirect=this.props.purchased? <Redirect to ="/"/> :null;
+    const purchasedRedirect=this.props.purchased ? <Redirect to ="/"/> :null;
     summary=(<div>
+        {purchasedRedirect}
 <CheckoutSummary ingredients={this.props.ings} 
             checkoutCancelled={this.checkoutCancelled}
              checkoutContinued={this.checkoutContinued} />
@@ -77,7 +80,7 @@ return(
 const mapStateToProps= state=>{
     return{
     ings:state.burgerBuilder.ingredients,
-    purchased:state.order.purchased
+     purchased:state.order.purchased
     // price:state.burgerBuilder.totalPrice
     };
  };
@@ -85,7 +88,7 @@ const mapStateToProps= state=>{
 
 //  const mapDispatchToProps =dispatch =>{
 //      return{
-// onInitPurchase: ()=>dispatch(actions.purchaseInit())
+//         onInitPurchase: ()=>dispatch(actions.purchaseInit())
 //      };
 //  }
     

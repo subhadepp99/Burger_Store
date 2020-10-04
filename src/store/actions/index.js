@@ -9,6 +9,7 @@ export {
 
 export {
 
-purchaseBurger,purchaseInit
+purchaseBurger,
+purchaseInit,fetchOrders
 
 }from './order';
